@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { useEffect } from 'react';
 import Navbar from './components/Navbar';
@@ -33,6 +33,8 @@ function App() {
               <Route path="/about" element={<About />} />
               <Route path="/courses" element={<Courses />} />
               <Route path="/contact" element={<Contact />} />
+              {/* Catch-all route for invalid URLs to redirect to home */}
+              <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </main>
           <Footer />
