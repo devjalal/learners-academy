@@ -14,8 +14,7 @@ export default function Contact() {
   const [status, setStatus] = useState('');
 
   const courses = [
-    '+1 Science',
-    '+2 Science',
+    '+1/+2 Science',
     '+1/+2 Computer Science',
     'NEET Coaching',
     'JEE Coaching',

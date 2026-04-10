@@ -26,7 +26,7 @@ export default function Navbar() {
     top: 0,
     width: '100%',
     zIndex: 1000,
-    backgroundColor: scrolled ? 'var(--primary)' : 'var(--primary)',
+    backgroundColor: 'var(--primary)',
     color: 'var(--text-inverse)',
     transition: 'var(--transition-normal)',
     boxShadow: scrolled ? 'var(--shadow-md)' : 'none',
@@ -39,31 +39,12 @@ export default function Navbar() {
     alignItems: 'center',
   };
 
-  const logoStyle = {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.5rem',
-    fontSize: '1.5rem',
-    fontWeight: '700',
-    fontFamily: 'Poppins, sans-serif',
-  };
-
-  const desktopLinksStyle = {
-    display: 'flex',
-    gap: '2rem',
-  };
-
   const linkStyle = ({ isActive }) => ({
     fontWeight: '500',
     color: isActive ? 'var(--accent)' : 'var(--text-inverse)',
     position: 'relative',
     padding: '0.5rem 0',
   });
-
-  const mobileMenuButtonStyle = {
-    display: 'none',
-    color: 'white',
-  };
 
   return (
     <nav style={navbarStyle}>
@@ -77,7 +58,7 @@ export default function Navbar() {
         </NavLink>
 
         {/* Desktop Nav */}
-        <div style={desktopLinksStyle} className="desktop-nav">
+        <div className="desktop-links">
           {navLinks.map((link) => (
             <NavLink 
               key={link.path} 
@@ -93,14 +74,81 @@ export default function Navbar() {
           </NavLink>
         </div>
 
-        {/* Mobile menu logic would go here, for now keeping it simple as per request for premium minimal style */}
+        {/* Mobile Toggle */}
+        <button 
+          className="mobile-toggle" 
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label="Toggle menu"
+        >
+          {isOpen ? <X size={28} /> : <Menu size={28} />}
+        </button>
+
+        {/* Mobile Menu Overlay */}
+        <div className={`mobile-menu ${isOpen ? 'active' : ''}`}>
+          <div className="mobile-menu-content">
+            {navLinks.map((link) => (
+              <NavLink 
+                key={link.path} 
+                to={link.path} 
+                className="mobile-nav-link"
+                onClick={() => setIsOpen(false)}
+              >
+                {link.name}
+              </NavLink>
+            ))}
+            <NavLink 
+              to="/contact" 
+              className="btn-primary" 
+              style={{ textAlign: 'center', marginTop: '1rem' }}
+              onClick={() => setIsOpen(false)}
+            >
+              Enquire Now
+            </NavLink>
+          </div>
+        </div>
       </div>
       
       <style>{`
-        @media (max-width: 768px) {
-          .desktop-nav {
-            display: none !important;
-          }
+        .desktop-links {
+          display: flex;
+          gap: 2rem;
+          align-items: center;
+        }
+        .mobile-toggle {
+          display: none;
+          color: white;
+          background: none;
+          border: none;
+          cursor: pointer;
+          z-index: 1001;
+        }
+        .mobile-menu {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100vh;
+          background-color: var(--primary);
+          z-index: 1000;
+          display: flex;
+          flex-direction: column;
+          padding: 8rem 2rem 2rem;
+          transform: translateX(100%);
+          transition: transform 0.3s ease-in-out;
+        }
+        .mobile-menu.active {
+          transform: translateX(0);
+        }
+        .mobile-menu-content {
+          display: flex;
+          flex-direction: column;
+          gap: 2rem;
+        }
+        .mobile-nav-link {
+          font-size: 1.5rem;
+          font-weight: 600;
+          color: white;
+          font-family: 'Poppins', sans-serif;
         }
         .nav-link-hover:after {
           content: '';
@@ -114,6 +162,14 @@ export default function Navbar() {
         }
         .nav-link-hover:hover:after {
           width: 100%;
+        }
+        @media (max-width: 768px) {
+          .desktop-links {
+            display: none;
+          }
+          .mobile-toggle {
+            display: block;
+          }
         }
       `}</style>
     </nav>
